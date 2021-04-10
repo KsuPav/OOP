@@ -1,6 +1,4 @@
 /*
-* Фамилия Имя Группа
-* ========================
 * Вариант 16:
 * 8-угольник
 * Треугольник
@@ -13,14 +11,14 @@
 
 #define PI 3.14159265f
 
-//точка многоугольника
+//Точка многоугольника
 using point = std::pair<float, float>;
 
-//родительский класс для всех фигур
+//Родительский класс для всех фигур
 class Figure
 {
 public:
-	//вычисление геометрического центра фигуры
+	//Вычисление геометрического центра фигуры
 	point getCenter()
 	{
 		point center = std::make_pair(0.0f, 0.0f);
@@ -34,10 +32,10 @@ public:
 		return center;
 	}
 
-	//вывод координат вершин фигуры
+	//Вывод координат вершин фигуры
 	void print()
 	{
-		bool comma = false; //печатать запятую перед точкой или нет
+		bool comma = false; //Печатать запятую перед точкой или нет
 		for (point p : m_points)
 		{
 			if (comma) std::cout << ", ";
@@ -47,7 +45,7 @@ public:
 		}
 	}
 
-	//вычисление площади
+	//Вычисление площади
 	float size()
 	{
 		float S = 0.0f;
@@ -57,10 +55,10 @@ public:
 	}
 
 protected:
-	//точки многоугольника
+	//Точки многоугольника
 	std::vector<point> m_points;
 
-	//площадь треугольника по координатам вершин
+	//Площадь треугольника по координатам вершин
 	//S = 1/2 * abs(det(x1 - x3, y1 - y3; x2 - x3, y2 - y3))
 	float triag(point& a, point& b, point& c)
 	{
@@ -88,7 +86,7 @@ public:
 class Square : public Figure
 {
 public:
-	//заполняем вектор вершин
+	//Заполняем вектор вершин
 	Square(float x, float y, float r, float a)
 	{
 		for (int i = 0; i < 4; i++)
@@ -102,7 +100,7 @@ public:
 class Triangle : public Figure
 {
 public:
-	//заполняем вектор вершин
+	//Заполняем вектор вершин
 	Triangle(float x, float y, float r, float a)
 	{
 		for (int i = 0; i < 3; i++)
@@ -113,7 +111,7 @@ public:
 	}
 };
 
-//список команд
+//Список команд
 void showCommands()
 {
 	std::cout <<
@@ -129,16 +127,16 @@ void showCommands()
 
 int main()
 {
-	//вектор фигур
+	//Вектор фигур
 	std::vector<Figure*> figures;
 
 	showCommands();
 
-	//цикл программы
+	//Цикл программы
 	bool loop = true;
 	while (loop)
 	{
-		//читаем введённую команду
+		//Читаем введённую команду
 		std::cout << "> ";
 
 		int command;
