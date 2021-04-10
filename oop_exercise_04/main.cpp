@@ -12,15 +12,15 @@
 
 #define PI 3.14159265f
 
-//родительский класс для всех фигур
+//Родительский класс для всех фигур
 template<class T>
 class Figure
 {
 public:
-	//точка многоугольника
+	//Точка многоугольника
 	using point = std::pair<T, T>;
 
-	//вычисление геометрического центра фигуры
+	//Вычисление геометрического центра фигуры
 	point getCenter()
 	{
 		point center = std::make_pair((T)0, (T)0);
@@ -34,10 +34,10 @@ public:
 		return center;
 	}
 
-	//вывод координат вершин фигуры
+	//Вывод координат вершин фигуры
 	void print()
 	{
-		bool comma = false; //печатать запятую перед точкой или нет
+		bool comma = false; //Печатать запятую перед точкой или нет
 		for (point p : m_points)
 		{
 			if (comma) std::cout << ", ";
@@ -47,7 +47,7 @@ public:
 		}
 	}
 
-	//вычисление площади
+	//Вычисление площади
 	T size()
 	{
 		T S = (T)0;
@@ -57,10 +57,10 @@ public:
 	}
 
 protected:
-	//точки многоугольника
+	//Точки многоугольника
 	std::vector<point> m_points;
 
-	//площадь треугольника по координатам вершин
+	//Площадь треугольника по координатам вершин
 	//S = 1/2 * abs(det(x1 - x3, y1 - y3; x2 - x3, y2 - y3))
 	T triag(point& a, point& b, point& c)
 	{
@@ -75,7 +75,7 @@ template<class T>
 class Octagon : public Figure<T>
 {
 public:
-	//заполняем вектор вершин
+	//Заполняем вектор вершин
 	Octagon(T x, T y, T r, T a)
 	{
 		for (int i = 0; i < 8; i++)
@@ -90,7 +90,7 @@ template<class T>
 class Square : public Figure<T>
 {
 public:
-	//заполняем вектор вершин
+	//Заполняем вектор вершин
 	Square(T x, T y, T r, T a)
 	{
 		for (int i = 0; i < 4; i++)
@@ -105,7 +105,7 @@ template<class T>
 class Triangle : public Figure<T>
 {
 public:
-	//заполняем вектор вершин
+	//Заполняем вектор вершин
 	Triangle(T x, T y, T r, T a)
 	{
 		for (int i = 0; i < 3; i++)
@@ -125,7 +125,7 @@ std::vector<T> toVector(std::tuple<> t)
 template<class T, class... T1>
 std::vector<T> toVector(std::tuple<T, T1...> t)
 {
-	//приведение tuple к родительскому классу даст нам хвост tuple
+	//Приведение tuple к родительскому классу даст нам хвост tuple
 	std::tuple<T1...> tail = *((std::tuple<T1...>*) & t);
 
 	std::vector<T> vec = toVector<T>(tail);
@@ -152,7 +152,7 @@ std::pair<T, T> tuple_getCenter(std::tuple<T1...> t)
 template<class T, class... T1>
 void tuple_print(std::tuple<T1...> t)
 {
-	bool comma = false; //печатать запятую перед точкой или нет
+	bool comma = false; //Печатать запятую перед точкой или нет
 	std::vector<std::pair<T, T>> points = toVector(t);
 
 	for (std::pair<T, T> p : points)
@@ -178,7 +178,7 @@ T tuple_size(std::tuple<T1...> t)
 	return S;
 }
 
-//список команд
+//Список команд
 void showCommands()
 {
 	std::cout <<
@@ -195,16 +195,16 @@ void showCommands()
 
 int main()
 {
-	//вектор фигур
+	//Вектор фигур
 	std::vector<Figure<float>*> figures;
 
 	showCommands();
 
-	//цикл программы
+	//Цикл программы
 	bool loop = true;
 	while (loop)
 	{
-		//читаем введённую команду
+		//Читаем введённую команду
 		std::cout << "> ";
 
 		int command;
