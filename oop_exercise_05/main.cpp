@@ -1,6 +1,4 @@
 /*
-* Фамилия Имя Группа
-* ========================
 * Вариант 16:
 * 8-угольник
 * Треугольник
@@ -15,15 +13,15 @@
 
 #define PI 3.14159265f
 
-//класс восьмиугольника
+//Класс восьмиугольника
 template<class T>
 class Octagon
 {
 public:
-	//точка многоугольника
+	//Точка многоугольника
 	using point = std::pair<T, T>;
 
-	//заполняем вектор вершин
+	//Заполняем вектор вершин
 	Octagon(T x, T y, T r, T a)
 	{
 		for (int i = 0; i < 8; i++)
@@ -32,14 +30,14 @@ public:
 			m_points[i] = std::make_pair(r * cos(phi) + x, r * sin(phi) + y);
 		}
 	}
-	//конструктор по умолчанию
+	//Конструктор по умолчанию
 	Octagon()
 	{
 		for (int i = 0; i < 8; i++)
 			m_points[i] = std::make_pair(0, 0);
 	}
 
-	//вычисление геометрического центра фигуры
+	//Вычисление геометрического центра фигуры
 	point getCenter()
 	{
 		point center = std::make_pair((T)0, (T)0);
@@ -53,10 +51,10 @@ public:
 		return center;
 	}
 
-	//вывод координат вершин фигуры
+	//Вывод координат вершин фигуры
 	void print()
 	{
-		bool comma = false; //печатать запятую перед точкой или нет
+		bool comma = false; //Печатать запятую перед точкой или нет
 		for (point p : m_points)
 		{
 			if (comma) std::cout << ", ";
@@ -66,7 +64,7 @@ public:
 		}
 	}
 
-	//вычисление площади
+	//Вычисление площади
 	T size()
 	{
 		T S = (T)0;
@@ -76,10 +74,10 @@ public:
 	}
 
 private:
-	//точки многоугольника
+	//Точки многоугольника
 	point m_points[8];
 
-	//площадь треугольника по координатам вершин
+	//Площадь треугольника по координатам вершин
 	//S = 1/2 * abs(det(x1 - x3, y1 - y3; x2 - x3, y2 - y3))
 	T triag(point& a, point& b, point& c)
 	{
@@ -88,17 +86,17 @@ private:
 	}
 };
 
-//реализация списка
+//Реализация списка
 template<class T>
 class List
 {
 private:
-	//элемент списка
+	//Элемент списка
 	struct Node
 	{
-		T data; //сам объект, хранимый списком
-		std::shared_ptr<Node> next; //следующий элемент
-		std::weak_ptr<Node> prev; //предыдущий элемент
+		T data; //Сам объект, хранимый списком
+		std::shared_ptr<Node> next; //Следующий элемент
+		std::weak_ptr<Node> prev; //Предыдущий элемент
 
 		Node() {}
 		Node(T d) : data(d) {}
@@ -106,16 +104,16 @@ private:
 		Node(T d, std::shared_ptr<Node> n, std::shared_ptr<Node> p) : data(d), next(n), prev(p) {}
 		Node(T d, std::shared_ptr<Node> n, std::weak_ptr<Node> p) : data(d), next(n), prev(p) {}
 	};
-	//первый элемент и элемент после последнего
+	//Первый элемент и элемент после последнего
 	std::shared_ptr<Node> first, terminal;
 
 public:
-	//итератор списка
+	//Итератор списка
 	class iterator
 	{
 	private:
 		std::weak_ptr<List::Node> ptr;
-		friend class List; //чтобы список имел доступ к переменной ptr
+		friend class List; //Чтобы список имел доступ к переменной ptr
 
 	public:
 		using difference_type = int;
@@ -124,22 +122,22 @@ public:
 		using pointer = T*;
 		using iterator_category = std::forward_iterator_tag;
 
-		//операторы для итератора
+		//Операторы для итератора
 		reference operator*()
 		{
-			//если итератор указывает на терминирующий элемент, генерируем исключение
+			//Если итератор указывает на терминирующий элемент, генерируем исключение
 			if (!ptr.lock()->next) throw std::out_of_range("trying to get value of unexisting element");
 			return ptr.lock()->data;
 		}
 		pointer operator->()
 		{
-			//если итератор указывает на терминирующий элемент, генерируем исключение
+			//Если итератор указывает на терминирующий элемент, генерируем исключение
 			if (!ptr.lock()->next) throw std::out_of_range("trying to access unexisting element");
 			return &(ptr.lock()->data);
 		}
 		iterator& operator++()
 		{
-			//мы не можем пройти дальше, чем терминирующий элемент
+			//Мы не можем пройти дальше, чем терминирующий элемент
 			if (!ptr.lock()->next) throw std::out_of_range("moving farther than terminal element");
 			//переходим к следующему элементу списка
 			ptr = (*ptr.lock()).next;
@@ -147,21 +145,21 @@ public:
 		}
 		bool operator!=(const iterator& other)
 		{
-			//итераторы не равны, если они указывают на разные элементы
+			//Итераторы не равны, если они указывают на разные элементы
 			return ptr.lock() != other.ptr.lock();
 		}
 	};
-	friend class iterator; //чтобы итератор имел доступ к классу Node
+	friend class iterator; //Чтобы итератор имел доступ к классу Node
 
-	//создание списка
+	//Создание списка
 	List()
 	{
-		//первый и терминирующий элемент равны
+		//Первый и терминирующий элемент равны
 		first = terminal = std::make_shared<Node>(Node());
 	}
 	~List() {}
 
-	//итераторы на первый и терминирующий элементы
+	//Итераторы на первый и терминирующий элементы
 	iterator begin()
 	{
 		iterator i;
@@ -175,79 +173,79 @@ public:
 		return i;
 	}
 
-	//вставка элемента перед элементом, на который указывает итератор
+	//Вставка элемента перед элементом, на который указывает итератор
 	void insert(iterator iter, const T& val)
 	{
-		//вставка перед первым элементом (ссылка на предыдущий элемент пустая)
+		//Вставка перед первым элементом (ссылка на предыдущий элемент пустая)
 		if (!(iter.ptr.lock()->prev.lock()))
 		{
-			//новый элемент будет первым
-			//его следующий элемент -- предыдущий первый элемент
+			//Новый элемент будет первым
+			//Его следующий элемент -- предыдущий первый элемент
 			first = std::make_shared<Node>(Node(val, first));
-			//создаём ссылку на первый элементр у второго
+			//Создаём ссылку на первый элементр у второго
 			first->next->prev = first;
 		}
-		//вставка в середине списка
+		//Вставка в середине списка
 		else
 		{
-			//создаём новый элемент
+			//Создаём новый элемент
 			auto el = std::make_shared<Node>(Node(val, iter.ptr.lock(), iter.ptr.lock()->prev));
-			//переставляем ссылки у предыдущего и следующего элемента
+			//Переставляем ссылки у предыдущего и следующего элемента
 			el->prev.lock()->next = el;
 			el->next->prev = el;
 		}
 	}
-	//удаление элемента из списка
+	//Удаление элемента из списка
 	iterator erase(iterator iter)
 	{
-		//нельзя удалить терминирующий элемент
+		//Нельзя удалить терминирующий элемент
 		if (iter.ptr.lock() == terminal) throw std::out_of_range("impossible to remove terminal element");
 
-		//возвращаемое значение -- итератор после удаляемого элемента
+		//Возвращаемое значение -- итератор после удаляемого элемента
 		iterator ret_val = iter;
 		++ret_val;
 
-		//удаление первого элемента
+		//Удаление первого элемента
 		if (!(iter.ptr.lock()->prev.lock()))
 		{
-			//зануляем ссылку на предыдущий элемент у второго элемента
+			//Зануляем ссылку на предыдущий элемент у второго элемента
 			first->next->prev = std::weak_ptr<Node>();
-			//теперь второй элемент является первым
+			//Теперь второй элемент является первым
 			first = first->next;
 		}
-		//удаление в середине списка
+		//Удаление в середине списка
 		else
 		{
-			//удаляемый элемент
+			//Удаляемый элемент
 			auto el = iter.ptr.lock();
-			//перекидываем ссылки через удаляемый элемент
+			//Перекидываем ссылки через удаляемый элемент
 			el->next->prev = el->prev;
 			el->prev.lock()->next = el->next;
 		}
 		return ret_val;
 	}
 
-	//размер списка
+	//Размер списка
 	size_t size() const
 	{
 		size_t sz = 0;
-		//начинаем с первого элемента
+		//Начинаем с первого элемента
 		std::weak_ptr<Node> w = first;
-		//переходим к следующему значению, пока не достигнем терминального элемента
+		//Переходим к следующему значению, пока не достигнем терминального элемента
 		while (w.lock() != terminal)
 		{
 			w = w.lock()->next;
 			sz++;
 		}
-		//длина списка -- количество пройденных шагов
+		//Длина списка -- количество пройденных шагов
 		return sz;
 	}
 
-	//элемент по индексу
+	//Элемент по индексу
 	T operator[](int i) { return *std::next(begin(), i); }
 };
 
-//список команд
+//Список команд
 void showCommands()
 {
 	std::cout <<
@@ -264,16 +262,16 @@ void showCommands()
 
 int main()
 {
-	//список фигур
+	//Список фигур
 	List<Octagon<float>> figures;
 
 	showCommands();
 
-	//цикл программы
+	//Цикл программы
 	bool loop = true;
 	while (loop)
 	{
-		//читаем введённую команду
+		//Читаем введённую команду
 		std::cout << "> ";
 
 		int command;
